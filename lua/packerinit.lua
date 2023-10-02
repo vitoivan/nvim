@@ -19,6 +19,7 @@ return require("packer").startup(function(use)
 	use(require("plugins.codeium"))
 	use("folke/neodev.nvim")
 	use("tzachar/local-highlight.nvim")
+	use("tpope/vim-fugitive")
 
 	-- use(require("plugins.lsp"))
 
