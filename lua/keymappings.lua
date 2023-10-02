@@ -16,8 +16,7 @@ end
 
 register_keymap({ "n", "sv" }, "<leader>ps", "<cmd>PackerSync<CR>", { noremap = true, silent = true })
 register_keymap({ "n", "sv" }, "<leader>th", "<cmd>LocalHighlightToggle<CR>", { noremap = true, silent = true })
--- register_keymap({ "n", "sv" }, "<leader>ff", ":lua vim.lsp.buf.format()<CR>", { noremap = true, silent = true })
-register_keymap({ "n", "sv" }, "<leader>w", "<cmd>Telescope live_grep<CR>", { noremap = true, silent = true })
+register_keymap({ "n", "sv" }, "<leader>fw", "<cmd>Telescope live_grep<CR>", { noremap = true, silent = true })
 
 register_keymap({ "n", "v" }, "<C-z>", "", { noremap = true, silent = true })
 register_keymap({ "n", "v" }, "q", "", { noremap = true, silent = true })
