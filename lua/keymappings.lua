@@ -69,3 +69,6 @@ register_keymap(
 	"<cmd>Telescope current_buffer_fuzzy_find<CR>",
 	{ noremap = true, silent = true }
 )
+
+-- Gitsigns
+register_keymap({ "n", "sv" }, "<leader>gd", ":Gitsigns diffthis<CR><C-w>h", { noremap = true, silent = true })
