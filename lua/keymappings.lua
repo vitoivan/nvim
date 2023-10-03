@@ -41,7 +41,7 @@ register_keymap({ "n" }, "<C-f>", "za", { noremap = true, silent = true })
 register_keymap({ "n" }, "<C-_>", "gcc", { noremap = false, silent = true })
 register_keymap({ "n", "sv" }, "<leader>gg", "<cmd>LazyGit<CR>", { noremap = false, silent = true })
 register_keymap({ "n" }, "<leader>tt", "<cmd>TransparentToggle<CR>", { noremap = false, silent = true })
-register_keymap({ "n" }, "<C-n>", "<cmd>Neotree toggle<CR>", { noremap = false, silent = true })
+register_keymap({ "n" }, "<C-n>", "<cmd>Neotree toggle reveal=true<CR>", { noremap = false, silent = true })
 
 -- visual mode
 register_keymap({ "v" }, "<leader>y", '"+y<CR>', { noremap = true, silent = true })
