@@ -15,6 +15,7 @@ end
 -- Packer
 
 register_keymap({ "n", "sv" }, "<leader>ps", "<cmd>PackerSync<CR>", { noremap = true, silent = true })
+register_keymap({ "n" }, "U", "<C-r>", { noremap = true, silent = true })
 register_keymap({ "n", "sv" }, "<leader>th", "<cmd>LocalHighlightToggle<CR>", { noremap = true, silent = true })
 register_keymap({ "n", "sv" }, "<leader>fw", "<cmd>Telescope live_grep<CR>", { noremap = true, silent = true })
 

@@ -20,6 +20,9 @@ return require("packer").startup(function(use)
 	use("folke/neodev.nvim")
 	use("tzachar/local-highlight.nvim")
 	use("tpope/vim-fugitive")
+	use("elkowar/yuck.vim")
+	use("ap/vim-css-color")
+	-- use("gpanders/nvim-parinfer")
 
 	-- use(require("plugins.lsp"))
 
@@ -55,7 +58,15 @@ return require("packer").startup(function(use)
 		},
 
 		config = function()
+			require("mason-null-ls").setup({
+				ensure_installed = {
+					"eslint_d",
+				},
+				handlers = {},
+			})
+
 			local null_ls = require("null-ls")
+
 			null_ls.setup({
 				on_attach = function(client, bufnr)
 					if client.supports_method("textDocument/formatting") then
@@ -75,9 +86,14 @@ return require("packer").startup(function(use)
 						})
 					end
 				end,
-			})
-			require("mason-null-ls").setup({
-				handlers = {},
+
+				sources = {
+					eslint_id = {
+						condition = function(utils)
+							return utils.root_has_file({ ".eslintrc.js", ".eslintrc.json", ".eslintrc.cjs" })
+						end,
+					},
+				},
 			})
 		end,
 	})
