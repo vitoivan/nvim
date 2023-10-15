@@ -9,7 +9,6 @@ return require("packer").startup(function(use)
 	use(require("plugins.neotree"))
 	use(require("plugins.telescope"))
 	use(require("plugins.colors"))
-	use(require("plugins.transparent"))
 	use(require("plugins.treesitter"))
 	use(require("plugins.lua-line"))
 	use(require("plugins.icons"))
@@ -22,9 +21,7 @@ return require("packer").startup(function(use)
 	use("tpope/vim-fugitive")
 	use("elkowar/yuck.vim")
 	use("ap/vim-css-color")
-	-- use("gpanders/nvim-parinfer")
-
-	-- use(require("plugins.lsp"))
+	use("f-person/git-blame.nvim")
 
 	use({
 		"williamboman/mason.nvim",
