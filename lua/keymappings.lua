@@ -46,6 +46,7 @@ register_keymap({ "n" }, "<leader>tt", "<cmd>TransparentToggle<CR>", { noremap =
 register_keymap({ "n" }, "<C-n>", "<cmd>Neotree toggle reveal=true<CR>", { noremap = false, silent = true })
 
 -- visual mode
+register_keymap({ "v" }, "<C-f>", 'y/<C-R>"<CR>', { noremap = true, silent = true })
 register_keymap({ "v" }, "<leader>y", '"+y<CR>', { noremap = true, silent = true })
 register_keymap({ "v" }, "<C-d>", "ykpgv", { noremap = true, silent = true })
 register_keymap({ "v" }, "p", "pgvyw", { noremap = true, silent = true })
