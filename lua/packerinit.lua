@@ -16,11 +16,11 @@ return require("packer").startup(function(use)
 	use(require("plugins.lazygit"))
 	use(require("plugins.comment"))
 	use(require("plugins.codeium"))
-	use("folke/neodev.nvim")
-	use("tzachar/local-highlight.nvim")
+	-- use("folke/neodev.nvim")
+	-- use("tzachar/local-highlight.nvim")
 	use("tpope/vim-fugitive")
-	use("elkowar/yuck.vim")
-	use("ap/vim-css-color")
+	-- use("elkowar/yuck.vim")
+	-- use("ap/vim-css-color")
 	use("f-person/git-blame.nvim")
 
 	use({
@@ -95,13 +95,13 @@ return require("packer").startup(function(use)
 		end,
 	})
 
-	require("neodev").setup({})
+--	require("neodev").setup({})
 	require("config.lsp")
-	require("local-highlight").setup({
-		disable_file_types = {},
-		hlgroup = "Search",
-		cw_hlgroup = nil,
-		-- Whether to display highlights in INSERT mode or not
-		insert_mode = false,
-	})
+--	require("local-highlight").setup({
+-- 		disable_file_types = {},
+-- 		hlgroup = "Search",
+-- 		cw_hlgroup = nil,
+-- 		-- Whether to display highlights in INSERT mode or not
+-- 		insert_mode = false,
+-- 	})
 end)
