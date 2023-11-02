@@ -16,6 +16,7 @@ end
 
 register_keymap({ "n", "sv" }, "<leader>ps", "<cmd>PackerSync<CR>", { noremap = true, silent = true })
 register_keymap({ "n", "sv" }, "<leader>d", "<cmd>Telescope diagnostics<CR>", { noremap = true, silent = true })
+register_keymap({ "n", "sv" }, "<leader>gs", "<cmd>Telescope git_status<CR>", { noremap = true, silent = true })
 register_keymap({ "n" }, "U", "<C-r>", { noremap = true, silent = true })
 register_keymap({ "n", "sv" }, "<leader>th", "<cmd>LocalHighlightToggle<CR>", { noremap = true, silent = true })
 register_keymap({ "n", "sv" }, "<leader>fw", "<cmd>Telescope live_grep<CR>", { noremap = true, silent = true })
@@ -64,8 +65,13 @@ register_keymap({ "i" }, "<C-s>", "<Esc>:w<CR>", { noremap = true, silent = true
 register_keymap({ "i" }, "<Esc><leader>q", "<Esc>:q<CR>", { noremap = true, silent = true })
 
 -- Telescope
-register_keymap({ "n", "sv" }, "<C-p>", "<cmd>Telescope find_files<CR>", { noremap = true, silent = true })
-register_keymap({ "n", "sv" }, "<C-P>", "<cmd>Telescope find_files hidden=true<CR>", { noremap = true, silent = true })
+register_keymap({ "n", "sv" }, "<C-p>", "<cmd>Telescope find_files hidden=true<CR>", { noremap = true, silent = true })
+register_keymap(
+	{ "n", "sv" },
+	"<C-P>",
+	"<cmd>Telescope find_files hidden=true no_ignore=true<CR>",
+	{ noremap = true, silent = true }
+)
 register_keymap(
 	{ "n", "sv" },
 	"<leader>?",
@@ -75,3 +81,6 @@ register_keymap(
 
 -- Gitsigns
 register_keymap({ "n", "sv" }, "<leader>gd", ":Gitsigns diffthis<CR><C-w>h", { noremap = true, silent = true })
+
+-- Close all buffers but this
+register_keymap({ "n", "sv" }, "<leader>cb", "<cmd>%bd|e#<CR>", { noremap = true, silent = true })

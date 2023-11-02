@@ -95,13 +95,13 @@ return require("packer").startup(function(use)
 		end,
 	})
 
---	require("neodev").setup({})
+	--	require("neodev").setup({})
 	require("config.lsp")
---	require("local-highlight").setup({
--- 		disable_file_types = {},
--- 		hlgroup = "Search",
--- 		cw_hlgroup = nil,
--- 		-- Whether to display highlights in INSERT mode or not
--- 		insert_mode = false,
--- 	})
+	--	require("local-highlight").setup({
+	-- 		disable_file_types = {},
+	-- 		hlgroup = "Search",
+	-- 		cw_hlgroup = nil,
+	-- 		-- Whether to display highlights in INSERT mode or not
+	-- 		insert_mode = false,
+	-- 	})
 end)
