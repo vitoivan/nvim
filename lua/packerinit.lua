@@ -56,9 +56,7 @@ return require("packer").startup(function(use)
 
 		config = function()
 			require("mason-null-ls").setup({
-				ensure_installed = {
-					"eslint_d",
-				},
+				ensure_installed = {},
 				handlers = {},
 			})
 
