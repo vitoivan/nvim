@@ -4,6 +4,8 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+vim.g.editorconfig = true
+
 -- Set to true if you have a Nerd Font installed
 vim.g.have_nerd_font = true
 
@@ -38,6 +40,8 @@ vim.opt.breakindent = true
 -- Case-insensitive searching UNLESS \C or capital in search
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+
+vim.opt.guicursor = "n-v-i-c:block-Cursor"
 
 -- Keep signcolumn on by default
 vim.opt.signcolumn = "yes"
@@ -220,6 +224,23 @@ require("lazy").setup({
 
 	-- "gc" to comment visual regions/lines
 	{ "numToStr/Comment.nvim", opts = {} },
+	{
+		"f-person/git-blame.nvim",
+		-- load the plugin at startup
+		event = "VeryLazy",
+		-- Because of the keys part, you will be lazy loading this plugin.
+		-- The plugin wil only load once one of the keys is used.
+		-- If you want to load the plugin at startup, add something like event = "VeryLazy",
+		-- or lazy = false. One of both options will work.
+		opts = {
+			-- your configuration comes here
+			-- for example
+			enabled = true, -- if you want to enable the plugin
+			message_template = " <summary> • <date> • <author> • <<sha>>", -- template for the blame message, check the Message template section for more options
+			date_format = "%m-%d-%Y %H:%M:%S", -- template for the date, check Date format section for more options
+			virtual_text_column = 1, -- virtual text start column, check Start virtual text at column section for more options
+		},
+	},
 
 	-- Here is a more advanced example where we pass configuration
 	-- options to `gitsigns.nvim`. This is equivalent to the following lua:
@@ -378,6 +399,7 @@ require("lazy").setup({
 						"node%_modules/.*",
 						"%lock.json",
 						"%.venv/.*",
+						"%.next/.*",
 						"venv/.*",
 						"dist/.*",
 						"%.git/.*",
@@ -576,6 +598,9 @@ require("lazy").setup({
 					end
 
 					local hasEslintCfg = vim.fn.filereadable(vim.fn.getcwd() .. "/.eslintrc.js")
+					if hasEslintCfg <= 0 then
+						hasEslintCfg = vim.fn.filereadable(vim.fn.getcwd() .. "/.eslintrc.json")
+					end
 
 					if client and client.name == "tsserver" and hasEslintCfg > 0 then
 						client.server_capabilities.documentFormattingProvider = false
@@ -638,6 +663,7 @@ require("lazy").setup({
 						"templ",
 						"javascript",
 						"react",
+						"css",
 					},
 				},
 				--
@@ -711,7 +737,7 @@ require("lazy").setup({
 				-- You can use a sub-list to tell conform to run *until* a formatter
 				-- is found.
 				javascript = { { "eslint", "prettier_d" } },
-				-- typescript = { { "prettierd", "prettier_d", "eslint" } },
+				typescript = { { "prettierd", "prettier_d", "eslint" } },
 			},
 		},
 	},
@@ -927,6 +953,7 @@ require("lazy").setup({
 				return vim.fn["codeium#Clear"]()
 			end, { expr = true, silent = true })
 		end,
+		-- enabled = false,
 	},
 
 	{ -- Collection of various small independent plugins/modules
@@ -966,7 +993,18 @@ require("lazy").setup({
 			--  Check out: https://github.com/echasnovski/mini.nvim
 		end,
 	},
-
+	{
+		"karloskar/poetry-nvim",
+		config = function()
+			require("poetry-nvim").setup()
+		end,
+	},
+	{
+		"petobens/poet-v",
+		requires = {
+			"karloskar/poetry-nvim",
+		},
+	},
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
