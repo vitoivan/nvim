@@ -202,19 +202,16 @@ function M.setup_servers()
 
 			-- Verifica se há configuração do ESLint no projeto
 			local fname = vim.api.nvim_buf_get_name(bufnr)
-			local root = find_root_dir(
-				fname,
-				{
-					".eslintrc.js",
-					".eslintrc.cjs",
-					".eslintrc.json",
-					".eslintrc.yaml",
-					".eslintrc.yml",
-					".eslintrc",
-					"eslint.config.js",
-					"package.json",
-				}
-			)
+			local root = find_root_dir(fname, {
+				".eslintrc.js",
+				".eslintrc.cjs",
+				".eslintrc.json",
+				".eslintrc.yaml",
+				".eslintrc.yml",
+				".eslintrc",
+				"eslint.config.js",
+				"package.json",
+			})
 
 			local eslint_configs = {
 				".eslintrc.js",
@@ -255,7 +252,7 @@ function M.setup_servers()
 				if eslint_bin and vim.fn.executable(eslint_bin) == 1 then
 					vim.lsp.start({
 						name = "eslint",
-						cmd = { eslint_bin, "--stdio" },
+						cmd = { eslint_bin, "--stdin" },
 						filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
 						root_dir = root,
 						capabilities = capabilities,

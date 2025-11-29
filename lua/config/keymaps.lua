@@ -4,5 +4,4 @@ require("config.keymaps.general")
 require("config.keymaps.git")
 require("config.keymaps.editor")
 require("config.keymaps.diagnostics")
-require("config.keymaps.lsp_debug")
-
+-- require("config.keymaps.lsp_debug")

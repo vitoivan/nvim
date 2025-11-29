@@ -1,23 +1,66 @@
 -- Plugins de formatação
 
-local typescript = require("config.lsp.typescript")
-
 return {
 	{
-		"stevearc/conform.nvim",
-		opts = {
-			notify_on_error = false,
-			format_on_save = function(bufnr)
-				local disable_filetypes = { c = true, cpp = true }
-				return {
-					timeout_ms = 500,
-					lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
-				}
-			end,
-			formatters_by_ft = vim.tbl_extend("force", {
-				lua = { "stylua" },
-			}, typescript.get_formatters()),
+		"nvimtools/none-ls.nvim",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
 		},
+
+		config = function()
+			local null_ls = require("null-ls")
+			local group = vim.api.nvim_create_augroup("lsp_format_on_save", { clear = false })
+			local event = "BufWritePre" -- or "BufWritePost"
+			local async = event == "BufWritePost"
+
+			null_ls.setup({
+				sources = {
+					-- Prettier para formatação
+					null_ls.builtins.formatting.prettier.with({
+						filetypes = {
+							"css",
+							"graphql",
+							"html",
+							"javascript",
+							"javascriptreact",
+							"json",
+							"less",
+							"markdown",
+							"scss",
+							"typescript",
+							"typescriptreact",
+							"yaml",
+							"vue",
+						},
+						-- Opcionalmente, use prettierd para melhor performance
+						-- command = "prettierd",
+					}),
+				},
+				on_attach = function(client, bufnr)
+					if client.supports_method("textDocument/formatting") then
+						vim.keymap.set("n", "<Leader>f", function()
+							vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+						end, { buffer = bufnr, desc = "[lsp] format" })
+
+						-- format on save
+						vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
+						vim.api.nvim_create_autocmd(event, {
+							buffer = bufnr,
+							group = group,
+							callback = function()
+								vim.lsp.buf.format({ bufnr = bufnr, async = async })
+							end,
+							desc = "[lsp] format on save",
+						})
+					end
+
+					if client.supports_method("textDocument/rangeFormatting") then
+						vim.keymap.set("x", "<Leader>f", function()
+							vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+						end, { buffer = bufnr, desc = "[lsp] format" })
+					end
+				end,
+			})
+		end,
 	},
 }
-

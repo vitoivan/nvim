@@ -42,16 +42,18 @@ return {
 					},
 					sorting_strategy = "ascending",
 					layout_config = {
-						horizontal = { prompt_position = "top", preview_width = 0.55 },
+						horizontal = {
+							prompt_position = "top",
+							preview_width = 0.55,
+							results_width = 0.45,
+						},
 						vertical = { mirror = false },
-						width = 0.87,
-						height = 0.80,
+						width = 0.95,
+						height = 0.85,
 						preview_cutoff = 120,
 					},
-					path_display = function(_, path)
-						local tail = require("telescope.utils").path_tail(path)
-						return string.format("%s (%s)", tail, path)
-					end,
+					-- Trunca paths inteligentemente mantendo partes importantes visíveis
+					path_display = { "smart" },
 				},
 				extensions = {
 					["ui-select"] = {

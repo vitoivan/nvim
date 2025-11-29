@@ -15,6 +15,6 @@ return {
 			"eslint.config.js" -- flat config (v9+)
 		),
 		filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+		cmd = { "eslint_d", "--stdin", "--stdin-filename", "$FILENAME", "--format", "json" },
 	},
 }
-
