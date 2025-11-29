@@ -24,6 +24,14 @@ return {
 				topdelete = { text = "‾" },
 				changedelete = { text = "~" },
 			},
+			-- Configuração para janelas flutuantes (popups)
+			preview_config = {
+				border = "rounded", -- Borda arredondada (opções: 'single', 'double', 'rounded', 'solid', 'shadow')
+				style = "minimal",
+				relative = "cursor",
+				row = 0,
+				col = 1,
+			},
 		},
 	},
 

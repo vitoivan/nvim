@@ -5,7 +5,7 @@ local M = {}
 -- Função auxiliar para encontrar root_dir
 local function find_root_dir(fname, root_files)
 	local dir = vim.fn.fnamemodify(fname, ":p:h")
-	
+
 	while dir ~= "/" and dir ~= "" do
 		for _, file in ipairs(root_files) do
 			local path = dir .. "/" .. file
@@ -15,7 +15,7 @@ local function find_root_dir(fname, root_files)
 		end
 		dir = vim.fn.fnamemodify(dir, ":h")
 	end
-	
+
 	return vim.fn.getcwd()
 end
 
@@ -39,7 +39,7 @@ function M.setup_lsp_attach(event)
 					-- Processa os resultados manualmente
 					local items = options.items
 					local offset_encoding = options.offset_encoding or "utf-16"
-					
+
 					-- Se o primeiro item tem 'uri', são Locations e precisam ser convertidos
 					if items[1] and items[1].uri then
 						local ok, converted = pcall(vim.lsp.util.locations_to_items, items, offset_encoding)
@@ -60,7 +60,7 @@ function M.setup_lsp_attach(event)
 							return
 						end
 					end
-					
+
 					-- Verifica se items tem a estrutura correta de quickfix
 					if items[1] and items[1].filename and items[1].lnum then
 						-- Se só tem um resultado, vai direto
@@ -78,7 +78,7 @@ function M.setup_lsp_attach(event)
 								items = items,
 							})
 							vim.cmd("copen")
-							
+
 							-- Fecha o quickfix automaticamente quando selecionar um item
 							local augroup = vim.api.nvim_create_augroup("lsp_definitions_quickfix", { clear = true })
 							local qf_bufnr = vim.api.nvim_get_current_buf()
@@ -140,12 +140,12 @@ end
 -- Função auxiliar para encontrar binário (prioridade: PATH > Mason)
 local function find_bin(package_name, bin_name)
 	-- 1. PRIORIDADE: Tenta encontrar no PATH primeiro
-	local bin_base = vim.fn.fnamemodify(bin_name, ":t")  -- Pega só o nome do arquivo
+	local bin_base = vim.fn.fnamemodify(bin_name, ":t") -- Pega só o nome do arquivo
 	local which = vim.fn.system("which " .. bin_base .. " 2>/dev/null"):gsub("%s+", "")
 	if which and which ~= "" and vim.fn.executable(which) == 1 then
 		return which
 	end
-	
+
 	-- 2. Para ESLint, tenta também no node_modules do projeto
 	if package_name == "eslint-lsp" then
 		local cwd = vim.fn.getcwd()
@@ -154,16 +154,16 @@ local function find_bin(package_name, bin_name)
 			return local_bin
 		end
 	end
-	
+
 	-- 3. FALLBACK: Tenta encontrar no Mason
 	local mason_path = vim.fn.stdpath("data") .. "/mason/packages"
 	local bin = mason_path .. "/" .. package_name .. "/" .. bin_name
-	
+
 	-- Verifica se o binário existe e é executável
 	if vim.fn.executable(bin) == 1 then
 		return bin
 	end
-	
+
 	-- Se não encontrar, retorna nil para evitar erro
 	return nil
 end
@@ -175,7 +175,7 @@ function M.setup_servers()
 	if ok then
 		capabilities = vim.tbl_deep_extend("force", capabilities, cmp_lsp.default_capabilities())
 	end
-	
+
 	-- TypeScript
 	local typescript = require("config.lsp.typescript")
 	vim.api.nvim_create_autocmd("FileType", {
@@ -199,11 +199,23 @@ function M.setup_servers()
 			if #clients > 0 then
 				return
 			end
-			
+
 			-- Verifica se há configuração do ESLint no projeto
 			local fname = vim.api.nvim_buf_get_name(bufnr)
-			local root = find_root_dir(fname, { ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.json", ".eslintrc.yaml", ".eslintrc.yml", ".eslintrc", "eslint.config.js", "package.json" })
-			
+			local root = find_root_dir(
+				fname,
+				{
+					".eslintrc.js",
+					".eslintrc.cjs",
+					".eslintrc.json",
+					".eslintrc.yaml",
+					".eslintrc.yml",
+					".eslintrc",
+					"eslint.config.js",
+					"package.json",
+				}
+			)
+
 			local eslint_configs = {
 				".eslintrc.js",
 				".eslintrc.cjs",
@@ -213,7 +225,7 @@ function M.setup_servers()
 				".eslintrc",
 				"eslint.config.js",
 			}
-			
+
 			local has_eslint = false
 			for _, config_file in ipairs(eslint_configs) do
 				if vim.fn.filereadable(root .. "/" .. config_file) == 1 then
@@ -221,7 +233,7 @@ function M.setup_servers()
 					break
 				end
 			end
-			
+
 			-- Verifica se eslint está no package.json
 			if not has_eslint then
 				local package_json = root .. "/package.json"
@@ -235,7 +247,7 @@ function M.setup_servers()
 					end
 				end
 			end
-			
+
 			-- Só inicia se houver configuração do ESLint
 			if has_eslint then
 				local eslint_bin = find_bin("eslint-lsp", "node_modules/.bin/eslint")
@@ -263,7 +275,7 @@ function M.setup_servers()
 			if #clients > 0 then
 				return
 			end
-			
+
 			-- Usa defer_fn para não bloquear o Neovim durante a inicialização
 			vim.defer_fn(function()
 				local gopls_bin = find_bin("gopls", "gopls")
@@ -301,8 +313,6 @@ function M.setup_servers()
 								completeUnimported = true,
 								matcher = "Fuzzy",
 								deepCompletion = false,
-								-- Cache mais agressivo
-								buildCacheKey = true,
 								-- Limita escopo de busca para acelerar
 								expandWorkspaceToModule = false,
 							},
@@ -439,14 +449,28 @@ function M.setup_servers()
 			local bufnr = vim.api.nvim_get_current_buf()
 			local clients = vim.lsp.get_clients({ bufnr = bufnr, name = "tailwindcss" })
 			if #clients == 0 then
-				local tailwind_bin = find_bin("tailwindcss-language-server", "node_modules/.bin/tailwindcss-language-server")
+				local tailwind_bin =
+					find_bin("tailwindcss-language-server", "node_modules/.bin/tailwindcss-language-server")
 				if tailwind_bin and vim.fn.executable(tailwind_bin) == 1 then
 					vim.lsp.start({
 						name = "tailwindcss",
 						cmd = { tailwind_bin, "--stdio" },
-						filetypes = { "html", "hbs", "templ", "tmpl", "javascript", "react", "css", "typescript", "typescriptreact" },
+						filetypes = {
+							"html",
+							"hbs",
+							"templ",
+							"tmpl",
+							"javascript",
+							"react",
+							"css",
+							"typescript",
+							"typescriptreact",
+						},
 						root_dir = function(fname)
-							return find_root_dir(fname, { "tailwind.config.js", "tailwind.config.ts", "package.json", ".git" })
+							return find_root_dir(
+								fname,
+								{ "tailwind.config.js", "tailwind.config.ts", "package.json", ".git" }
+							)
 						end,
 						capabilities = capabilities,
 						offset_encoding = "utf-16",

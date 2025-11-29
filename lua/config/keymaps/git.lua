@@ -12,3 +12,8 @@ vim.keymap.set("n", "<leader>L", "<cmd>:%diffget //3<CR>")
 vim.keymap.set("n", "<leader>gg", "<cmd>LazyGit<CR>")
 vim.keymap.set("v", "<leader>gg", "<cmd>LazyGit<CR>")
 
+-- Git Blame em janela flutuante (como hover do LSP)
+vim.keymap.set("n", "<leader>gb", function()
+	require("gitsigns").blame_line({ full = true }) -- Mostra diff completo do commit
+end, { desc = "Git blame in floating window" })
+
